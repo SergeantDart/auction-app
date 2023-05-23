@@ -2,14 +2,14 @@ package com.dumitrascuantonio.auctionapp.dto.response;
 
 import com.dumitrascuantonio.auctionapp.entity.Image;
 import com.dumitrascuantonio.auctionapp.entity.Lot;
-import java.util.Base64;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import static org.apache.tomcat.util.codec.binary.Base64.encodeBase64String;
+
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class LotWithImageResponse {
@@ -25,7 +25,7 @@ public class LotWithImageResponse {
 
     public void setImage(Image image) {
         if (image.getImageBytes().length != 0) {
-            this.image = Base64.getEncoder().encodeToString(image.getImageBytes());
+            this.image = encodeBase64String(image.getImageBytes());
         } else {
             this.image = null;
         }

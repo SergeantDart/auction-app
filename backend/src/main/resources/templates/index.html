@@ -19,6 +19,11 @@
         background-color: green;
         color: white;
     }
+    img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+    }
 </style>
 <body class="d-flex flex-column min-vh-100">
 <div th:replace="fragments/navbar :: navbar">
@@ -27,7 +32,7 @@
 
 <div class="p-5 rounded-lg m-1 container-fluid jumbotron">
     <h1 class="display-4">Welcome to auction-app!</h1>
-    <p class="lead">This is a site that allows you not only to bid on lots, but also to create your own lots.</p>
+    <p class="lead">Auction-app is a site that allows you not only to bid on lots, but also to create your own lots.</p>
     <hr class="my-4">
     <p>First, I advise you to register, or log in to your account if you already have one. After that, you will have
         access to all functions of this site. Enjoy using it!</p>
@@ -35,8 +40,8 @@
 </div>
 
 <div class="row">
-    <div th:each="lotWithImage : ${lotsWithImages}" class="col-md-6 p-3">
-        <div class="card w-75 mx-auto">
+    <div th:each="lotWithImage : ${lotsWithImages}" class="col-lg-3 d-flex align-items-stretch">
+        <div class="card w-75">
             <h5 class="card-header" th:text="${lotWithImage.lot.title}">Title</h5>
             <div th:if="${lotWithImage.image}">
                 <img class="card-img-top img-fluid" th:src="@{'data:image;base64,' +${lotWithImage.image}}"/>
@@ -60,7 +65,7 @@
     <div th:remove="all" class="col-md-6 p-3">
         <div class="card w-75 mx-auto">
             <h5 class="card-header">Title</h5>
-            <img class="card-img-top" src="../images/skel&guit.jpg"/>
+            <img class="card-img-top img-fluid" src="../images/skel&guit.jpg"/>
             <div class="row card-text">
                 <div class="col-md">Cost</div>
                 <div class="col-md text-md-end">Auctioneer</div>

@@ -34,17 +34,22 @@ public class BetService {
     @Autowired
     private UserRepository userRepository;
 
+
     public Bet createBet(Long lotId, BetRequest betRequest, Principal principal) {
         User user = getUserByPrincipal(principal);
         Lot lot = lotRepository.findByIdAndArchivalIsFalse(lotId)
                 .orElseThrow(() -> new LotNotFoundException("Lot cannot be found for id: " + lotId));
-        boolean isHighestBet = lot.getBets()
+        boolean isHighestBet = !lot.getBets()
                 .stream()
                 .filter(bet -> !bet.isArchival())
                 .anyMatch(bet -> bet.getAmount().compareTo(betRequest.getAmount()) >= 0);
-        boolean isHigherThanInitialCost = betRequest.getAmount().compareTo(lot.getInitCost()) < 0;
-        if (!lot.isActive() || isHigherThanInitialCost || isHighestBet) {
-            throw new BetCreateException("You cannot bet on your own lot.");
+        boolean isHigherThanInitialCost = betRequest.getAmount().compareTo(lot.getInitCost()) >= 0;
+        if (!lot.isActive()) {
+            throw new BetCreateException("You cannot bet on an inactive lot.");
+        } else if (!isHigherThanInitialCost || !isHighestBet) {
+            throw new BetCreateException("You must bet higher.");
+        } else if (lot.getUser().equals(user)) {
+            throw new BetCreateException("You can't bid on your own lot.");
         }
 
         Bet bet = new Bet();
@@ -52,7 +57,6 @@ public class BetService {
         bet.setCreatedDate(LocalDateTime.now());
         bet.setLot(lot);
         bet.setUserId(user.getId());
-
         return betRepository.save(bet);
     }
 
@@ -83,13 +87,11 @@ public class BetService {
                 .orElseThrow(() -> new BetNotFoundException("Bet with id: " + betId + " cannot be found."));
     }
 
-    public List<Bet> saveAllBets(List<Bet> bets) {
-        return betRepository.saveAll(bets);
-    }
 
     private User getUserByPrincipal(Principal principal) {
         String username = principal.getName();
         return userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with name: " + username));
     }
+
 }

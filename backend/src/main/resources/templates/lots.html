@@ -33,10 +33,14 @@
         <input class="w-75" type="text" name="keyword" th:value="${keyword}" placeholder="Find by Title" size="50">
         <button type="submit" class="col-md btn btn-success">Search</button>
     </form>
+
+    <hr>
+
+
 </div>
 <div class="row">
-    <div th:each="lotWithImage : ${lotsWithImages}" class="col-sm-12 col-md-6 col-xl-4 p-3">
-        <div class="card w-75 mx-auto">
+    <div th:each="lotWithImage : ${lotsWithImages}" class="col-lg-3 d-flex align-items-stretch">
+        <div class="card w-75">
             <h5 class="card-header" th:text="${lotWithImage.lot.title}">Title</h5>
             <div th:if="${lotWithImage.image}">
                 <img class="card-img-top img-fluid" th:src="@{'data:image;base64,' +${lotWithImage.image}}"/>
@@ -60,7 +64,7 @@
     <div th:remove="all" class="col-md-6 p-3">
         <div class="card w-75 mx-auto">
             <h5 class="card-header">Title</h5>
-            <img class="card-img-top" src="../images/skel&guit.jpg"/>
+            <img class="card-img-top img-fluid w-100" src="../images/skel&guit.jpg"/>
             <div class="row card-text">
                 <div class="col-md">Cost</div>
                 <div class="col-md text-md-end">Auctioneer</div>

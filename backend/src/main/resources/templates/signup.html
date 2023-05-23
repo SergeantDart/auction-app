@@ -16,7 +16,7 @@
 <div class="container col-md-10">
     <h2 class="text-md-center">Sign Up</h2>
 
-    <form class="form-horizontal" th:object="${signUpRequest}" th:action="@{/sign-up}" method="post">
+    <form class="form-horizontal" th:object="${signUpRequest}" th:action="@{/signup}" method="post">
 
         <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
             <p th:text="#{request.hasErrors}">Error Message</p>

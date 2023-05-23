@@ -18,15 +18,15 @@
 
 <div class="pb-4">
     <ul class="nav nav-pills nav-fill">
-        <li class="nav-item border" style="background: green">
-            <a href="/account/created-lots" aria-current="true" class="fs-5 nav-link" style="color: white">Created
+        <li sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_AUCTIONEER')" class="nav-item border" style="background: green">
+            <a href="/account/createdLots" aria-current="true" class="fs-5 nav-link" style="color: white">Created
                 Lots</a>
         </li>
         <li class="nav-item border" style="background: green">
-            <a href="/account/participated-in-lots" class="fs-5 nav-link" style="color: white">Lots You Participate In</a>
+            <a href="/account/participatedLots" class="fs-5 nav-link" style="color: white">Lots You Participate In</a>
         </li>
         <li class="nav-item border " style="background: green">
-            <a href="/account/won-lots" class="fs-5 nav-link" style="color: white">Lots You Won</a>
+            <a href="/account/wonLots" class="fs-5 nav-link" style="color: white">Lots You Won</a>
         </li>
     </ul>
 </div>

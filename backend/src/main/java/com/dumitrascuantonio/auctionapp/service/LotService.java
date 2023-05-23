@@ -11,6 +11,7 @@ import com.dumitrascuantonio.auctionapp.exception.LotNotFoundException;
 import com.dumitrascuantonio.auctionapp.repository.BetRepository;
 import com.dumitrascuantonio.auctionapp.repository.LotRepository;
 import com.dumitrascuantonio.auctionapp.repository.UserRepository;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,7 +41,8 @@ public class LotService {
         Lot lot = new Lot();
         lot.setTitle(lotRequest.getTitle());
         lot.setDescription(lotRequest.getDescription());
-        lot.setInitCost(lotRequest.getInitCost());
+        lot.setInitCost(lotRequest.getInitCost() != null
+                ? lotRequest.getInitCost() : BigDecimal.ZERO);
 
         if (LocalDateTime.now().isBefore(lotRequest.getEndDate())) {
            lot.setStartDate(LocalDateTime.now());

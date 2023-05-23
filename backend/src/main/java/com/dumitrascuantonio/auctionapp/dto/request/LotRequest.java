@@ -23,7 +23,6 @@ public class LotRequest {
 
     @Future(message = "It must be a date in the future.")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @NotBlank(message = "Please, enter end date.")
     private LocalDateTime endDate;
 
     @PositiveOrZero(message = "Cost cannot be less than zero.")

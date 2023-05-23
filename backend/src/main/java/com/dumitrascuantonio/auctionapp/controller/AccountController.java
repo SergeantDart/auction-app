@@ -6,8 +6,6 @@ import com.dumitrascuantonio.auctionapp.entity.WinningBet;
 import com.dumitrascuantonio.auctionapp.service.LotService;
 import com.dumitrascuantonio.auctionapp.service.UserService;
 import com.dumitrascuantonio.auctionapp.service.WinningBetService;
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,28 +13,36 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+import java.util.ArrayList;
+
 @Controller
 @RequestMapping("/account")
 public class AccountController {
 
     @Autowired
     private UserService userService;
-
+    
     @Autowired
     private LotService lotService;
-
+    
     @Autowired
     private WinningBetService winningBetService;
-
+    
     @GetMapping("/")
-    public String showAccountInfo(Principal principal, Model model) {
-        User currentUser = userService.getUserByPrincipal(principal);
-        model.addAttribute("user", currentUser);
-        return "accountInfo";
+    public String showAccount(Principal principal,
+                                Model model){
+
+        User currUser = userService.getUserByPrincipal(principal);
+        model.addAttribute("user", currUser);
+
+        return "myAccount";
     }
 
-    @GetMapping("/created-lots")
-    public String showCreatedLots(Principal principal, Model model) {
+    @GetMapping("/createdLots")
+    public String showCreatedLots(Principal principal,
+                                  Model model){
+
         List<Lot> activeLots = lotService.getAllLotsForUser(principal, true);
         List<Lot> completeLots = lotService.getAllLotsForUser(principal, false);
 
@@ -46,25 +52,26 @@ public class AccountController {
         return "accountLots";
     }
 
-    @GetMapping("/participated-in-lots")
-    public String showParticipatedInLots(Principal principal, Model model) {
-        List<Lot> participatedInLots = lotService.getLotsUserParticipatedIn(principal, true);
+    @GetMapping("/participatedLots")
+    public String showLotsUserParticipateIn(Principal principal,
+                                            Model model){
 
-        model.addAttribute("participatedInLots", participatedInLots);
+        List<Lot> participatedLots = lotService.getLotsUserParticipatedIn(principal, true);
+        model.addAttribute("participatedLots", participatedLots);
 
         return "accountLots";
     }
 
-    @GetMapping("/won-lots")
-    public String showWonLots(Principal principal, Model model) {
+    @GetMapping("/wonLots")
+    public String showLotsUserWon(Principal principal,
+                                  Model model){
         List<WinningBet> winningBets = winningBetService.getAllWinningBetsForUser(principal);
         List<Lot> wonLots = new ArrayList<>();
-
         winningBets.stream()
                 .forEach(winningBet -> wonLots.add(winningBet.getBet().getLot()));
-
         model.addAttribute("wonLots", wonLots);
 
         return "accountLots";
     }
+
 }
